@@ -12,23 +12,23 @@ namespace Homework1.Controllers
         public ActionResult Index()
         {
             
-            List<MoneyViewModel> MVMS = new List<MoneyViewModel>() {
-                    new MoneyViewModel() {
+            List<MoneyViewModel> MVMS = new List<MoneyViewModel> {
+                    new MoneyViewModel {
                     Type="支出",
                     Cost = 1000,
                     CostDate = new DateTime(2016,01,02),
                 },
-                    new MoneyViewModel() {
+                    new MoneyViewModel {
                     Type="支出",
                     Cost = 2000,
                     CostDate = new DateTime(2016,01,05),
                 },
-                    new MoneyViewModel() {
+                    new MoneyViewModel {
                     Type="收入",
                     Cost = 500,
                     CostDate = new DateTime(2016,01,12),
                 },
-                    new MoneyViewModel() {
+                    new MoneyViewModel {
                     Type="支出",
                     Cost = 1700,
                     CostDate = new DateTime(2016,01,18),
@@ -40,6 +40,23 @@ namespace Homework1.Controllers
         [HttpGet]
         public ActionResult Insert()
         {
+            List<SelectListItem> typeDropList = new List<SelectListItem>()
+            {
+                new SelectListItem {
+                    Text="請選擇",
+                    Value="",
+                    Selected=true
+                },
+                new SelectListItem {
+                    Text="支出",
+                    Value="1"
+                },
+                new SelectListItem {
+                    Text="收入",
+                    Value="2"
+                }
+            };
+            ViewBag.TypeDropList = typeDropList;
             return View();
         }
         public ActionResult About()

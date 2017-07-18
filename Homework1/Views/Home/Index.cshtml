@@ -1,29 +1,33 @@
 ﻿@model IEnumerable<Homework1.Models.ViewModels.MoneyViewModel>
 @{
     ViewBag.Title = "Home Page";
-    var i = 0;
+    var num = 0;
 }
 <div class="well">
     @Html.Action("Insert")
 </div>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>@Html.DisplayNameFor(model => model.Type)</th>
-            <th>@Html.DisplayNameFor(model => model.Cost)</th>
-            <th>@Html.DisplayNameFor(model => model.CostDate)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>@(i+=1)</td>
-                <td>@Html.DisplayFor(model => item.Type)</td>
-                <td>@Html.DisplayFor(model => item.Cost)</td>
-                <td>@Html.DisplayFor(model => item.CostDate, "{ 0:yyyy - MM - dd}")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>@Html.DisplayNameFor(model => model.Type)</th>
+                    <th>@Html.DisplayNameFor(model => model.CostDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Cost)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(num += 1)</td>
+                        <td>@Html.DisplayFor(model => item.Type)</td>
+                        <td>@Html.DisplayFor(model => item.CostDate, "{ 0:yyyy - MM - dd}")</td>
+                        <td>@Html.DisplayFor(model => item.Cost)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
