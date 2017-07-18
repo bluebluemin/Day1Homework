@@ -1,4 +1,6 @@
 ﻿using Homework1.Models.ViewModels;
+using Homework1.Repositories;
+using Homework1.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +11,19 @@ namespace Homework1.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly AccountService _accountSvc;
+        public HomeController()
         {
-            
-            List<MoneyViewModel> MVMS = new List<MoneyViewModel> {
-                    new MoneyViewModel {
-                    Type="支出",
-                    Cost = 1000,
-                    CostDate = new DateTime(2016,01,02),
-                },
-                    new MoneyViewModel {
-                    Type="支出",
-                    Cost = 2000,
-                    CostDate = new DateTime(2016,01,05),
-                },
-                    new MoneyViewModel {
-                    Type="收入",
-                    Cost = 500,
-                    CostDate = new DateTime(2016,01,12),
-                },
-                    new MoneyViewModel {
-                    Type="支出",
-                    Cost = 1700,
-                    CostDate = new DateTime(2016,01,18),
-                }
-            };
-            return View(MVMS);
+            var unitOfWork = new EFUnitOfWork();
+            _accountSvc = new AccountService(unitOfWork);
         }
         [ChildActionOnly]
+        public ActionResult Index()
+        {           
+            IList<MoneyViewModel> MVMS = _accountSvc.Get();
+            return View(MVMS);
+        }
+        
         [HttpGet]
         public ActionResult Insert()
         {
@@ -58,6 +45,14 @@ namespace Homework1.Controllers
             };
             ViewBag.TypeDropList = typeDropList;
             return View();
+        }
+        [HttpPost]
+        public ActionResult Insert([Bind(Include = "Type,Cost,CostDate,Memo")] CreateMoneyViewModel CMVM)
+        {
+            _accountSvc.AddAccount(CMVM);
+            _accountSvc.Save();
+            return RedirectToAction("Insert");
+
         }
         public ActionResult About()
         {
