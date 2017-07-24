@@ -5,7 +5,18 @@
     Layout = null;
 }
 
-
+<style>
+    .red{
+        color:red
+    }
+    .blue{
+        color:blue
+    }
+</style>
+<div>
+    @Html.Action("Insert")
+</div>
+<div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-hover">
             <thead>
@@ -20,8 +31,8 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@(num += 1)</td>
-                        <td>@Html.DisplayFor(model => item.Type)</td>
+                        <td>@(num ++)</td>
+                        <td class="@columnColor(@item.Type)">@Html.DisplayFor(model => item.Type)</td>
                         <td>@Html.DisplayFor(model => item.CostDate, "{ 0:yyyy - MM - dd}")</td>
                         <td>@Html.DisplayFor(model => item.Cost)</td>
                     </tr>
@@ -29,4 +40,18 @@
             </tbody>
         </table>
     </div>
-
+</div>
+    
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@helper columnColor(string type) { 
+if(type=="支出")
+    {
+        @("red")
+    }
+else
+    {
+        @("blue")
+    }
+}

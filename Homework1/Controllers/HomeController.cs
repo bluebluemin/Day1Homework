@@ -17,7 +17,7 @@ namespace Homework1.Controllers
             var unitOfWork = new EFUnitOfWork();
             _accountSvc = new AccountService(unitOfWork);
         }
-        [ChildActionOnly]
+        
         public ActionResult Index()
         {           
             IList<MoneyViewModel> MVMS = _accountSvc.Get();
@@ -25,6 +25,7 @@ namespace Homework1.Controllers
         }
         
         [HttpGet]
+        [ChildActionOnly]
         public ActionResult Insert()
         {
             List<SelectListItem> typeDropList = new List<SelectListItem>()
@@ -43,15 +44,37 @@ namespace Homework1.Controllers
                     Value="2"
                 }
             };
-            ViewBag.TypeDropList = typeDropList;
+            ViewData["typeDropList"] = typeDropList;
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Insert([Bind(Include = "Type,Cost,CostDate,Memo")] CreateMoneyViewModel CMVM)
         {
-            _accountSvc.AddAccount(CMVM);
-            _accountSvc.Save();
-            return RedirectToAction("Insert");
+            List<SelectListItem> typeDropList = new List<SelectListItem>()
+            {
+                new SelectListItem {
+                    Text="請選擇",
+                    Value="",
+                    Selected=true
+                },
+                new SelectListItem {
+                    Text="支出",
+                    Value="1"
+                },
+                new SelectListItem {
+                    Text="收入",
+                    Value="2"
+                }
+            };
+            ViewData["typeDropList"] = typeDropList;
+            if (ModelState.IsValid)
+            {
+                _accountSvc.AddAccount(CMVM);
+                _accountSvc.Save();
+                return RedirectToAction("Index");
+            }
+            return View(CMVM);
 
         }
         public ActionResult About()

@@ -6,7 +6,7 @@
 
 
 <div class="well">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Insert", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
@@ -15,7 +15,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.Type, (IEnumerable<SelectListItem>)ViewBag.TypeDropList, htmlAttributes: new { @class = "form-control", id = "category" })
+                    @Html.DropDownListFor(model => model.Type, (IEnumerable<SelectListItem>)ViewData["typeDropList"], htmlAttributes: new { @class = "form-control", id = "category", style = "max-width:100%;" })
                     @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.CostDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CostDate, "{ 0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control datepicker", placeholder = "日期", style = "max-width:100%;", Type = "date" } })
+                    @Html.EditorFor(model => model.CostDate, new { htmlAttributes = new { @class = "form-control", style = "max-width:100%;", @type = "date" } })
                     @Html.ValidationMessageFor(model => model.CostDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -52,9 +52,7 @@
         </div>
     }
 </div>
-<div class="row">
-    @Html.Action("Index")
-</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
